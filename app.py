@@ -10,8 +10,8 @@ app = Flask(__name__)
 
 # 1. Load the Model and Feature Names
 # These must be in the same folder as app.py
-model = joblib.load('chinese_english_rf_model_v2.pkl') [cite: 1]
-feature_names = joblib.load('chinese_english_feature_names_v2.pkl') [cite: 1338]
+model = joblib.load('chinese_english_rf_model_v2.pkl')
+feature_names = joblib.load('chinese_english_feature_names_v2.pkl')
 
 # 2. Feature Extraction Logic
 # This function calculates the 20 features your model was trained on
@@ -20,7 +20,7 @@ def extract_features(url):
     domain = parsed_url.netloc
     path = parsed_url.path
     
-    # Simple calculation for features identified in your model metadata [cite: 2, 1338]
+    # Simple calculation for features identified in your model metadata
     features = {
         'url_length': len(url),
         'url_entropy': -sum((count/len(url)) * math.log2(count/len(url)) for count in [url.count(c) for c in set(url)]),
@@ -44,7 +44,7 @@ def extract_features(url):
         'very_long_url': 1 if len(url) > 75 else 0
     }
     
-    # Ensure features are in the exact order the model expects [cite: 2, 1338]
+    # Ensure features are in the exact order the model expects
     return [features[name] for name in feature_names]
 
 # 3. Routes
@@ -65,14 +65,14 @@ def predict():
         # Extract features and format for model
         query_features = np.array(extract_features(url)).reshape(1, -1)
         
-        # Get Prediction [cite: 2]
+        # Get Prediction
         prediction = model.predict(query_features)[0]
         probability = model.predict_proba(query_features)[0]
         
         # Return results to the dashboard
         return jsonify({
             'url': url,
-            'status': 'Phishing' if prediction == 'phishing' else 'Legitimate', [cite: 2]
+            'status': 'Phishing' if prediction == 'phishing' else 'Legitimate',
             'confidence': round(max(probability) * 100, 2)
         })
 
