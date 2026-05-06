@@ -1,0 +1,15 @@
+# Web Framework
+flask>=3.0.0
+
+# Core Machine Learning Libraries
+scikit-learn==1.6.1
+numpy>=1.24.0
+
+# Data Processing and Utilities
+pandas>=2.0.0
+joblib>=1.3.0
+
+# Recommended for feature extraction (if used in your scripts)
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+tldextract>=5.1.0
